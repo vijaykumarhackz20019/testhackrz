@@ -1,0 +1,20 @@
+name: Unix Commands Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Unix commands
+        run: |
+          pwd
+          ls -la
+          whoami
+          uname -a
+          date
+          env
