@@ -1,20 +1,53 @@
-name: Unix Commands Demo
+name: Inspect GitHub Runner
 
 on:
   workflow_dispatch:
 
 jobs:
-  demo:
+  inspect:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run Unix commands
+      - name: Show system information
         run: |
-          pwd
-          ls -la
+          echo "=== Current User ==="
           whoami
+
+          echo
+          echo "=== Current Directory ==="
+          pwd
+
+          echo
+          echo "=== OS Information ==="
+          cat /etc/os-release
+
+          echo
+          echo "=== Kernel ==="
           uname -a
-          date
-          env
+
+      - name: Inspect common directories
+        run: |
+          for dir in \
+            /opt/hostedtoolcache \
+            /home/runner/work \
+            /usr/bin
+          do
+            echo
+            echo "===== $dir ====="
+
+            if [ -d "$dir" ]; then
+              echo "Exists: Yes"
+              ls -ld "$dir"
+              echo
+              echo "First 50 entries:"
+              ls -la "$dir" | head -50
+            else
+              echo "Directory does not exist."
+            fi
+          done
+
+      - name: Show environment variables
+        run: |
+          env | sort
