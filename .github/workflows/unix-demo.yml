@@ -1,4 +1,4 @@
-name: Inspect GitHub Runner
+name: Inspect My PAT Scopes
 
 on:
   workflow_dispatch:
@@ -8,46 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Show system information
+      - name: Show PAT scopes
+        env:
+          MY_PAT: ${{ secrets.MY_PAT }}
         run: |
-          echo "=== Current User ==="
-          whoami
+          echo "Checking token scopes..."
 
-          echo
-          echo "=== Current Directory ==="
-          pwd
-
-          echo
-          echo "=== OS Information ==="
-          cat /etc/os-release
-
-          echo
-          echo "=== Kernel ==="
-          uname -a
-
-      - name: Inspect common directories
-        run: |
-          for dir in \
-            /opt/hostedtoolcache \
-            /home/runner/work \
-            /usr/bin
-          do
-            echo
-            echo "===== $dir ====="
-
-            if [ -d "$dir" ]; then
-              echo "Exists: Yes"
-              ls -ld "$dir"
-              echo
-              echo "First 50 entries:"
-              ls -la "$dir" | head -50
-            else
-              echo "Directory does not exist."
-            fi
-          done
-
-      - name: Show environment variables
-        run: |
-          env | sort
+          curl -sSI \
+            -H "Authorization: Bearer $MY_PAT" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/user \
+            | grep -Ei "x-oauth-scopes|x-accepted-oauth-scopes"
