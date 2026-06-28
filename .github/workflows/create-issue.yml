@@ -1,9 +1,12 @@
-name: Create Issue Every 2 Minutes
+name: Create Issue
 
 on:
-  schedule:
-    - cron: '*/2 * * * *'
   workflow_dispatch:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '*/5 * * * *'
 
 permissions:
   issues: write
@@ -13,8 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Create issue
-        uses: actions/github-script@v7
+      - uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -24,5 +26,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `Scheduled Issue ${now}`,
-              body: `Created automatically at ${now}`
+              body: `Created at ${now}`
             });
