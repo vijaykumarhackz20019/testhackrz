@@ -1,8 +1,8 @@
-name: Create Issue at 9:54 PM IST
+name: Create Issue at 10:44 PM IST
 
 on:
   schedule:
-    - cron: '24 16 * * *'   # 9:54 PM IST
+    - cron: '14 17 * * *'   # 10:44 PM IST
   workflow_dispatch:
 
 permissions:
