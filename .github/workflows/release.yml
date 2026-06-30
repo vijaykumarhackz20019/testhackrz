@@ -2,7 +2,7 @@ name: Scheduled Release
 
 on:
   schedule:
-    - cron: '14 4 * * *'   # 9:44 AM IST
+    - cron: '54 4 * * *'   # 10:24 AM IST
   workflow_dispatch:
 
 permissions:
