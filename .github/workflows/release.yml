@@ -1,0 +1,38 @@
+name: Scheduled Release
+
+on:
+  schedule:
+    - cron: '14 4 * * *'   # 9:44 AM IST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create tag
+        run: |
+          TAG="release-$(date +'%Y%m%d-%H%M%S')"
+          git tag "$TAG"
+          git push origin "$TAG"
+          echo "TAG=$TAG" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: process.env.TAG,
+              name: `Automated Release ${process.env.TAG}`,
+              body: `Automatically created on ${new Date().toISOString()}`,
+              draft: false,
+              prerelease: false
+            });
