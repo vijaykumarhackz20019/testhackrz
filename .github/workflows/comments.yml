@@ -2,14 +2,15 @@ name: Add Commit Comment
 on:
   push:
     branches:
-      - main  # Change to your default branch if needed
+      - main
 
 jobs:
   add-comment:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write  # Required for commenting
+      pull-requests: write  # Required for commenting on commits
+      issues: write         # Sometimes needed for commit comments
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -17,7 +18,7 @@ jobs:
       - name: Comment on commit
         uses: peter-evans/commit-comment@v3
         with:
-          sha: 1511033066cff80656a833c742ddada4cbab69ee  # Hardcoded SHA
+          sha: 1511033066cff80656a833c742ddada4cbab69ee
           body: |
             ## ✅ Commit Processed
             **Repository:** `vijaykumarhackz20019/testhackrz`
