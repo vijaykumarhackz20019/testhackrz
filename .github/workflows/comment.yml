@@ -1,0 +1,11 @@
+- name: Add commit comment
+  uses: actions/github-script@v7
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    script: |
+      await github.request("POST /repos/{owner}/{repo}/comments", {
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        commit_sha: "1511033066cff80656a833c742ddada4cbab69ee",
+        body: "This is an automated comment from GitHub Actions."
+      });
