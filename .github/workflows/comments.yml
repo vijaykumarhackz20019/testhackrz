@@ -1,0 +1,28 @@
+name: Add Commit Comment
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  add-comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Comment on commit
+        uses: peter-evans/commit-comment@v3
+        with:
+          token: ${{ secrets.COMMENT_TOKEN }}  # Use PAT instead of default token
+          sha: 1511033066cff80656a833c742ddada4cbab69ee
+          body: |
+            ## ✅ Commit Processed
+            **Repository:** `vijaykumarhackz20019/testhackrz`
+            **Commit SHA:** `1511033066cff80656a833c742ddada4cbab69ee`
+
+            ### Change Summary:
+            - Added the line "test" to the file
+            - File modified: `hackrz`
+
+            📝 *Automated comment via GitHub Actions*
